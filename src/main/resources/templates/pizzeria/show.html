@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/fragments :: head"></head>
+<body>
+	<header th:insert="fragments/navbar :: navbar"></header>
+  
+	<main class="container d-flex justify-content-center">
+	   <div class="row">
+		 <div class="col mt-4">
+			  <h2 class="mb-4 fw-bold text-uppercase">Your order</h2>
+			  <div class="card m-auto" style="width: 18rem;">
+			     <div>
+			     <div class="card-image p-1">
+			  	     <img class="img-fluid" th:src="${pizza.foto}"> </img>
+			  	 </div>
+			  	 <div class="card-body">
+			  	     <h5 th:text="${pizza.name}" class="card-title"></h5>
+			  	     <p th:text="${pizza.description}" class="card-text"></p>
+			  	 </div>
+			  	 <ul class="list-group list-group-flush">
+			  	     <li th:text="'Prezzo: ' + ${pizza.price} + '€'" class="list-group-item"></li>
+			  	 </ul>
+			  	 <div class="card-body d-flex justify-content-between">
+					<a th:href="@{/pizzas}" class="btn btn btn-info">Back</a>
+					<a href="#" class="btn btn btn-success">Order</a>
+			     </div>
+		       </div>
+	       </div>
+	     </div>
+	   </div>
+	</main> 
+  
+  <th:block th:replace="fragments/fragments :: scripts"></th:block>
+</body>
+</html>
