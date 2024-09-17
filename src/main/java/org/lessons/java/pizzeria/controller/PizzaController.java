@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.lessons.java.pizzeria.model.Pizza;
 import org.lessons.java.pizzeria.repo.PizzaRepository;
+import org.lessons.java.pizzeria.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +24,16 @@ import jakarta.validation.Valid;
 public class PizzaController {
 	
 	//repository field con autowired per D.I.
+	//private PizzaRepository repo;
+	
 	@Autowired
-	private PizzaRepository repo;
+	private PizzaService service;
 	
 	@GetMapping
 	public String index(Model model) {
 		
 		//creo lista pizza e dopo prendo i dati dal DB
-		List<Pizza> pizzaList = repo.findAll();
+		List<Pizza> pizzaList = service.findAllSortedByNewer();
 		
 		//inserisco dati nel modello
 		model.addAttribute("pizzas", pizzaList);
@@ -39,7 +42,7 @@ public class PizzaController {
 	
 	@GetMapping("/{id}")
 	public String show(@PathVariable("id") Integer id, Model model) {
-		Pizza pizza = repo.findById(id).get();
+		Pizza pizza = service.getById(id);
 		model.addAttribute("pizza", pizza);
 		
 		return "pizzeria/show";
@@ -65,7 +68,7 @@ public class PizzaController {
 		if(bindingResult.hasErrors()) {
 			return "/pizzeria/create";
 		} else {
-			repo.save(formPizza);
+			service.create(formPizza);
 			attributes.addFlashAttribute("successMessage", formPizza.getName() + " has been created successfully");
 			return "redirect:/pizzas";
 		}
@@ -83,7 +86,7 @@ public class PizzaController {
 		 //la insierisco nel model
 		// model.addAttribute("pizza", pizzaToEdit); 
 		 
-		 model.addAttribute("pizza", repo.findById(id).get());
+		 model.addAttribute("pizza", service.getById(id));
 		 
 		 //restituisco la view con il model inserito
 		 return "/pizzeria/edit";
@@ -103,7 +106,7 @@ public class PizzaController {
 			return "/pizzas/edit";
 		 } else {
 		      //altriemnti prendi la repo e aggiorna la pizza con i nuovi dati	 
-			 repo.save(updatedFormPizza);
+			 service.update(updatedFormPizza);
 		     //ridireziona l'utente alla index delle pizze
 			 attributes.addFlashAttribute("successMessage", updatedFormPizza.getName() + " has been updated successfully");
 			 return "redirect:/pizzas";
@@ -117,7 +120,7 @@ public class PizzaController {
 				              RedirectAttributes attributes) {
 		 
 		 //prendi la repo e dopo aver trovato la pizza tramite l'id, cancellalo dal DB
-		 repo.deleteById(id);
+		 service.deleteById(id);
 			 
 		 //ridireziona l'utente alla index delle pizze
 		     attributes.addFlashAttribute("successMessage", "Pizza with id " + id + " has been deleted successfully");

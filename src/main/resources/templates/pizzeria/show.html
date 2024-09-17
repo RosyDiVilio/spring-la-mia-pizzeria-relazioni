@@ -16,10 +16,17 @@
 			  	 <div class="card-body">
 			  	     <h5 th:text="${pizza.name}" class="card-title"></h5>
 			  	     <p th:text="${pizza.description}" class="card-text"></p>
+					 <hr>
+					 <th:block th:each="offer : ${pizza.offers}">
+						 <p>Offer "<strong>[[ ${offer.title} ]]</strong>" starts: [[ ${offer.startOffer} ]]</p>
+						 <p>and ends: [[ ${offer.endOffer} ]]</p>
+						 <hr>
+					 </th:block>
 			  	 </div>
 			  	 <ul class="list-group list-group-flush">
 			  	     <li th:text="'Prezzo: ' + ${pizza.price} + '€'" class="list-group-item"></li>
 			  	 </ul>
+				 <div class="card-body"><strong>Offers can be applied:</strong> [[ ${pizza.offersCanBeApplied} ]] </div>
 			  	 <div class="card-body d-flex justify-content-between">
 					<a th:href="@{/pizzas}" class="btn btn btn-info">Back</a>
 					<a href="#" class="btn btn btn-success">Order</a>

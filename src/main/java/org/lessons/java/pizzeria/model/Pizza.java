@@ -1,15 +1,21 @@
 package org.lessons.java.pizzeria.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import org.hibernate.annotations.Formula;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -32,6 +38,8 @@ public class Pizza {
     @Column(name ="description", nullable = false)
 	private String description;
     
+    @NotNull
+    @Size(min=5, max=250)
     private String foto;
 	
     @NotNull
@@ -41,8 +49,33 @@ public class Pizza {
     private float price;
 
     private LocalDateTime updatedAt;
+    
+    @NotNull
+    @Max(250)
+    private Integer numberOfOffers;
+
+	//tipo di relazione da qualificare
+    @OneToMany( mappedBy = "pizza", cascade = { CascadeType.REMOVE })
+    private List<Offer> offers;
+    
+    //chiedo ad hibernate di eseguire una specifica query
+    @Formula( "(select pizzas.number_of_offers - count(offers.id) " +
+              "from pizzas " + 
+    		  "left join offers " +
+              "on pizzas.id = offers.pizza_id " +
+    		  "where pizzas.id = id)")
+    private Integer offersCanBeApplied;
+    
   
-    public Integer getId() {
+    public List<Offer> getOffers() {
+		return offers;
+	}
+
+	public void setOffers(List<Offer> offers) {
+		this.offers = offers;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
@@ -88,6 +121,22 @@ public class Pizza {
 
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+	
+	public Integer getNumberOfOffers() {
+		return numberOfOffers;
+	}
+
+	public void setNumberOfOffers(Integer numberOfOffers) {
+		this.numberOfOffers = numberOfOffers;
+	}
+
+	public Integer getOffersCanBeApplied() {
+		return offersCanBeApplied;
+	}
+
+	public void setOffersCanBeApplied(Integer offersCanBeApplied) {
+		this.offersCanBeApplied = offersCanBeApplied;
 	}
 
 }

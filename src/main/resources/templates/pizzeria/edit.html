@@ -14,6 +14,18 @@
 			       th:action="@{/pizzas/edit/{id}(id=${pizza.id})}" 
 				   method="POST">
 				   
+				   <div class="mb-3">
+				   	   <label for="foto" class="form-label">Pizza foto</label>
+				   	   <input type="text" class="form-control" value="https://static.vecteezy.com/ti/vettori-gratis/p3/9900536-illustrazione-grafica-di-pizza-carina-con-stile-cartone-animato-disegno-a-mano-buono-per-ristorante-t-shirt-stampa-adesivo-cafe-logo-emblema-promozione-ecc-vettoriale.jpg" 
+				   			 readonly id="foto" th:field="*{foto}" th:errorClass="is-invalid">
+				   				   					  
+				   	   <div th:if="${#fields.hasErrors('foto')}" class="invalid-feedback">
+				   		   <ul>
+				   			   <li th:each="err : ${#fields.errors('foto')}" th:text="${err}"></li>
+				   		   </ul>
+				   	   </div>
+				   </div>
+				   
 			      <div class="mb-3">
 			          <label for="name" class="form-label">Pizza name</label>
 			          <input type="text" class="form-control" id="name" placeholder="Choose your pizza name" th:field="*{name}" th:errorClass="is-invalid">
@@ -38,12 +50,22 @@
 				  </div>
 			      <div class="mb-3">
 			         <label for="price" class="form-label">Pizza price</label>
-			         <input type="text" class="form-control" id="price" placeholder="Choose the price" th:field="*{price}" th:errorClass="is-invalid">
+			         <input type="number" step="0.05" class="form-control" id="price" placeholder="Choose the price" th:field="*{price}" th:errorClass="is-invalid">
 		          
 					 <div th:if="${#fields.hasErrors('price')}" class="invalid-feedback">
 					 	 <ul>
 					 		 <li th:each="err : ${#fields.errors('price')}" th:text="${err}"></li>
 					 	 </ul>
+					 </div>
+					 
+					 <div class="mb-3 mt-3">
+					 	<label for="numberOfOffers" class="form-label">Offers</label>
+					 	<input type="text" class="form-control" id="numberOfOffers" placeholder="Choose the number of offers" th:field="*{numberOfOffers}" th:errorClass="is-invalid">
+					 					 		          
+					 	<div th:if="${#fields.hasErrors('numberOfOffers')}" class="invalid-feedback">
+					 		<ul>
+					 			<li th:each="err : ${#fields.errors('numberOfOffers')}" th:text="${err}"></li>
+					 		</ul>
 					 </div>
 				 
 				 </div>

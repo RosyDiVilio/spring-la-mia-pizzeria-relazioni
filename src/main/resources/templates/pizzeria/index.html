@@ -22,6 +22,8 @@
 					</div>
 					<div class="card-body">
 			          <h5 th:text="${pizza.name}" class="card-title"></h5>
+					  <h6 th:text=" 'Max number of offers: ' + ${pizza.numberOfOffers}"></h6>
+					  <h6 th:text=" 'Can be applied ' + ${pizza.offersCanBeApplied} + ' offers'"></h6>
 			        </div>
 			        <ul class="list-group list-group-flush">
 			          <li th:text="'Prezzo: ' + ${pizza.price} + '€'" class="list-group-item"></li>
