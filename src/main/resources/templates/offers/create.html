@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/fragments :: head"></head>
+<body>
+	<header th:insert="fragments/navbar :: navbar"></header>
+  
+	<main class="container d-flex justify-content-center">
+	   <div class="row">
+		 <div class="col mt-4">
+			  <h2 class="mb-4 fw-bold text-uppercase">Create new Offer for 
+				<span th:text="${offer.pizza.name}"></span>
+			  </h2>
+			  <form 
+			       id="offer-form"
+			       th:object="${offer}"
+			       th:action="@{/offers/create}" 
+				   method="POST">
+				   
+				  <input type="hidden" th:field="*{pizza}" id="pizza">
+				   
+			      <div class="mb-3">
+			          <label for="title" class="form-label">Offer Title</label>
+			          <input type="text" class="form-control" id="title" placeholder="Choose a title for the offer" th:field="*{title}" th:errorClass="is-invalid">
+					  
+					  <div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
+					     <ul>
+					        <li th:each="err : ${#fields.errors('title')}" th:text="${err}"></li>
+					     </ul>
+			          </div>
+					  
+			      </div>  
+			      <div class="mb-3">
+			          <label for="startOffer" class="form-label">Offer Starts</label>
+			          <input type="date" readonly class="form-control" id="startOffer" th:field="*{startOffer}" th:errorClass="is-invalid">
+			      
+					  <div th:if="${#fields.hasErrors('startOffer')}" class="invalid-feedback">
+	                     <ul>
+					        <li th:each="err : ${#fields.errors('startOffer')}" th:text="${err}"></li>
+					  	 </ul>
+					  </div>
+				  
+				  </div>
+			      <div class="mb-3">
+			         <label for="endOffer" class="form-label">Offer Ends</label>
+			         <input type="date" class="form-control" id="endOffer" th:field="*{endOffer}" th:errorClass="is-invalid">
+		          
+					 <div th:if="${#fields.hasErrors('endOffer')}" class="invalid-feedback">
+					 	 <ul>
+					 		 <li th:each="err : ${#fields.errors('endOffer')}" th:text="${err}"></li>
+					 	 </ul>
+					 </div>
+				 
+				 </div>
+				  <div class="mb-4 d-flex justify-content-between">
+					 <input type="reset" class="btn btn-warning" value="Delete">
+					 <input type="submit" class="btn btn-primary" value="Create Offer">
+				  </div>
+			  </form>
+	     </div>
+	   </div>
+	</main> 
+  
+  <th:block th:replace="fragments/fragments :: scripts"></th:block>
+</body>
+</html>

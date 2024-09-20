@@ -1,9 +1,11 @@
 package org.lessons.java.pizzeria.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import org.lessons.java.pizzeria.model.Offer;
 import org.lessons.java.pizzeria.model.Pizza;
-import org.lessons.java.pizzeria.repo.PizzaRepository;
+import org.lessons.java.pizzeria.service.IngredientService;
 import org.lessons.java.pizzeria.service.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,9 @@ public class PizzaController {
 	@Autowired
 	private PizzaService service;
 	
+	@Autowired
+	private IngredientService ingredientService;
+	
 	@GetMapping
 	public String index(Model model) {
 		
@@ -48,11 +53,31 @@ public class PizzaController {
 		return "pizzeria/show";
 	}
 	
+	@GetMapping("/{id}/newoffer")
+	public String newoffer(@PathVariable("id") Integer id, Model model, RedirectAttributes attributes) {
+		Pizza pizza = service.getById(id);
+		if (pizza.getOffersCanBeApplied() > 0) {
+			Offer offer = new Offer();
+			offer.setStartOffer(LocalDate.now());
+			offer.setPizza(pizza);
+			model.addAttribute("offer", offer);
+			
+			model.addAttribute("ingredients", ingredientService.findAll());
+			return "offers/create";
+		
+		} else {
+			attributes.addFlashAttribute("successMessage", pizza.getName() + " cannot have more offers to be added");
+			return "redirect:/pizzas";
+		}
+		
+	}
+	
 	//CREATE
 	
 	@GetMapping("/create")
 	public String create(Model model) {
 		model.addAttribute("pizza", new Pizza());
+		model.addAttribute("ingredients", ingredientService.findAll());
 		
 		return "pizzeria/create";
 	}
@@ -66,6 +91,7 @@ public class PizzaController {
 			            RedirectAttributes attributes) {
 		
 		if(bindingResult.hasErrors()) {
+			model.addAttribute("ingredients", ingredientService.findAll());
 			return "/pizzeria/create";
 		} else {
 			service.create(formPizza);
@@ -87,6 +113,7 @@ public class PizzaController {
 		// model.addAttribute("pizza", pizzaToEdit); 
 		 
 		 model.addAttribute("pizza", service.getById(id));
+		 model.addAttribute("ingredients", ingredientService.findAll());
 		 
 		 //restituisco la view con il model inserito
 		 return "/pizzeria/edit";
@@ -103,6 +130,7 @@ public class PizzaController {
 		 //se ci sono errori nel from
 		 if(bindingResult.hasErrors()) {
 		    //ritorna nel form e mostra gli errori	 
+			model.addAttribute("ingredients", ingredientService.findAll()); 
 			return "/pizzas/edit";
 		 } else {
 		      //altriemnti prendi la repo e aggiorna la pizza con i nuovi dati	 

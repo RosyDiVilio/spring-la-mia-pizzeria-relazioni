@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/fragments :: head"></head>
+<body>
+	<header th:insert="fragments/navbar :: navbar"></header>
+  
+	<main class="container d-flex justify-content-center">
+	   <div class="row">
+		 <div class="col mt-4">
+			  <h2 class="mb-4 fw-bold text-uppercase">[[ ${ingredient.name} ]] Details</h2>
+			  <div class="card m-auto" style="width: 18rem;">
+			     <div>
+			  	 <div class="card-body">
+			  	     <h5 th:text="${ingredient.name}" class="card-title"></h5>
+			  	 </div>
+				 <div class="card-body">
+					<p>
+					   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+					</p>
+					
+					<ul th:if="${ingredient.pizzas.size()} > 0|" class="mb-3">
+						<li th:each="pizza : ${ingredient.pizzas}">
+							 <a th:href="@{/pizzas/{id}(id=${pizza.id})}">[[ ${pizza.name} ]]</a>
+						</li>
+					</ul>
+					
+				 </div>
+					<a th:href="@{/ingredients}" class="btn btn btn-info m-3">Back</a>
+			     </div>
+		       </div>
+	       </div>
+	     </div>
+	   </div>
+	</main> 
+  
+  <th:block th:replace="fragments/fragments :: scripts"></th:block>
+</body>
+</html>

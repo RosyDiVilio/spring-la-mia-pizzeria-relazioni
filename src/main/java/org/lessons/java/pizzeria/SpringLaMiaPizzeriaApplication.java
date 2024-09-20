@@ -10,4 +10,4 @@ public class SpringLaMiaPizzeriaApplication {
 		SpringApplication.run(SpringLaMiaPizzeriaApplication.class, args);
 	}
 
-}
+} 

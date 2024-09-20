@@ -11,8 +11,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
@@ -66,8 +69,25 @@ public class Pizza {
     		  "where pizzas.id = id)")
     private Integer offersCanBeApplied;
     
+    //aggiungere relazione con ingredient
+    
+    @ManyToMany()
+    @JoinTable(
+    		name = "pizza_ingredient",
+    		joinColumns = @JoinColumn(name = "pizza_id"),
+    		inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    		)
+    private List<Ingredient> ingredients;
   
-    public List<Offer> getOffers() {
+    public List<Ingredient> getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(List<Ingredient> ingredients) {
+		this.ingredients = ingredients;
+	}
+
+	public List<Offer> getOffers() {
 		return offers;
 	}
 

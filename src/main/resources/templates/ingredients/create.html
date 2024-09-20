@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/fragments :: head"></head>
+<body>
+	<header th:insert="fragments/navbar :: navbar"></header>
+  
+	<main class="container d-flex justify-content-center">
+	   <div class="row">
+		 <div class="col mt-4">
+			  <h2 class="mb-4 fw-bold text-uppercase">Create new ingredient</h2>
+			  <form 
+			       id="offer-form"
+			       th:object="${ingredient}"
+			       th:action="@{/ingredients/create}" 
+				   method="POST">
+				   
+			      <div class="mb-3">
+			          <label for="name" class="form-label">Name</label>
+			          <input type="text" class="form-control" id="name" placeholder="Add a new ingredient" th:field="*{name}" th:errorClass="is-invalid">
+					  
+					  <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+					     <ul>
+					        <li th:each="err : ${#fields.errors('name')}" th:text="${err}"></li>
+					     </ul>
+			          </div>
+					  
+			      </div>  
+			    
+				  <div class="mb-4 d-flex justify-content-between">
+					 <input type="reset" class="btn btn-warning" value="Delete">
+					 <input type="submit" class="btn btn-primary" value="Add Ingredient">
+				  </div>
+			  </form>
+	     </div>
+	   </div>
+	</main> 
+  
+  <th:block th:replace="fragments/fragments :: scripts"></th:block>
+</body>
+</html>

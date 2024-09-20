@@ -17,10 +17,6 @@
 			  	     <h5 th:text="${pizza.name}" class="card-title"></h5>
 			  	     <p th:text="${pizza.description}" class="card-text"></p>
 					 <hr>
-					 <div th:if="${pizza.ingredients.size()} > 0">
-					  Ingredients: <span th:each="ingredient : ${pizza.ingredients}">[[ ${ingredient.name} ]], </span>
-					 <hr>
-					 </div>
 					 <th:block th:each="offer : ${pizza.offers}">
 						 <p>Offer "<strong>[[ ${offer.title} ]]</strong>" starts: [[ ${offer.startOffer} ]]</p>
 						 <p>and ends: [[ ${offer.endOffer} ]]</p>
@@ -32,8 +28,7 @@
 			  	 </ul>
 				 <div class="card-body"><strong>Offers can be applied:</strong> [[ ${pizza.offersCanBeApplied} ]] </div>
 			  	 <div class="card-body d-flex justify-content-between">
-					<a th:href="@{/pizzas}" class="btn btn btn-info">Back</a>
-					<a th:if="${pizza.offersCanBeApplied} > 0" th:href="@{/pizzas/{id}/newoffer(id=${pizza.id})}" class="btn btn-outline-secondary">New Offer</a>
+					<a th:href="@{/offers}" class="btn btn btn-info">Back</a>
 					<a href="#" class="btn btn btn-success">Order</a>
 			     </div>
 		       </div>
